@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Price Tracker</string>
+    <string name="Button">Valider</string>
+    <string name="message">ERREUR Votre lien URL est incorrect. Réessayez.</string>
+    <string name="url_link">URL Link</string>
+    <string name="error_message">Votre lien est incorrecte ou incompatible avec l\'application</string>
+    <string name="button_error">Réessayez</string>
+    <string name="Aid_Text"> Bienvenue dans Price Tracker !\n
+        Nous te remercions d\'utiliser une application crée par des étudiants. Nous espérons que notre travail te satisfait.\n
+        Bien sûr, pour pouvoir profiter au maximum de notre application, il faut savoir ce que tu peux faire et comment celle-ci fonctionne. C\'est pour cela que nous allons répondre à ces questions:\n\n
+        <b>Qu\'est-ce que Price Tracker ?</b>\n
+        Price Tracker est une application te permettant d\'être notifié lors de la baisse d\'un produit d\'un site compatible. Attention, il ne faut pas confondre cette application avec un comparateur de prix entre différentes enseignes!\n
+        Cette application est donc utile si vous souhaitez attendre que le prix du produit d\'un article sur un site en particulier baisse avant de l\'acheter. Avec cette application, plus besoin d\'aller vérifier par soit même si le prix a changé depuis la veille. Price Tracker le fait pour vous et vous previent ! Qu\'est-ce qu\'on peut demander de mieux ?\n
+        Toutefois, cette application est seulement compatible avec un certain nombre d\'enseigne (cf Listes des enseignes dans les Réglages).\n
+
+        <b>Comment utiliser cette application ?</b>\n
+        Rien de très compliqué, je vous rassure ;)\n
+        Vous avez trois grands espaces (de gauche à droite): Les réglages, l\'accueil et la liste.\n
+        Pour ajouter un nouvel article, il suffit :\n
+        - d\'aller à l\'espace "Accueil"\n
+        - Indiquer le nom et le lien URL du produit\n
+        - Appuyer le bouton "Valider"\n
+        En suivant toutes ces étapes, votre article sera ajouté dans l\'application avec des réglages prédéfinies que vous pourrez modifier.\n\n
+
+        Vous pouvez ensuite accéder à la liste des articles ajoutés dans l\'application dans l\'espace Liste.\n
+        Vous pouvez éxécuter plusieurs opérations dont:\n
+        -La suppression d\'un article\n
+        -La suppression de tous les articles\n
+        -La description détaillée d\'un produit\n
+        Quand vous serez dans la description du produit, vous obtenez des informations détaillées du produit mais vous avez également la posibilité de modifier ses paramètres.\n\n
+
+        Dans la section "Réglages", vous pouvez modifier la langue, obtenir la liste des sites compatibles, avoir accès aux FAQ et également proposer des suggestions d\'amélioration et d\'enseignes à rajouter.\n\n
+    </string>
+
+    <!--STELLA PART -->
+    <string name="button_langues">Langues</string>
+    <string name="button_enseignes">Liste des enseignes</string>
+    <string name="button_suggestions">Suggestions</string>
+    <string name="button_FAQ">FAQ</string>
+    <string name="button_francais">Français</string>
+    <string name="button_english">English</string>
+    <string name="string">Price Tracker n\'est malheureusement pas compatible avec n\'importe quel site de vente…\n\n
+        L\'application a été implémentée pour être compatible avec les sites des enseignes suivantes :\n
+    - Electro depot\n</string>
+    <string name="suggestions_text">Vous avez des suggestions afin d\'améliorer Price Tracker ou bien des retours à nous donner ?
+        \nN\'hésitez pas à les partager !
+        \nNous ferons de notre mieux pour les prendre en compte.\nMerci d\'avance !
+    </string>
+    <string name="enter_sugg">Ecrivez-nous ici !</string>
+    <string name="button_sugg">Envoyer</string>
+    <string name="text_FAQ"><b>Qui a créé Price Tracker ?</b>\nPrice Tracker a été créé par des étudiants de ESIEA en 2ème année internationale à l\'issue d\'une projet scientifique et technique.\n</string>
+    <string name="test">Etre notifié si le prix est inférieur à</string>
+    <string name="update">Prix initial</string>
+    <string name="added">Dernière fois mis à jour le </string>
+    <string name="price">Dernier prix enregistré</string>
+    <string name="link">Lien URL</string>
+</resources>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.hello_world">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <service
+        android:name=".MyService"
+        android:enabled="true"
+        android:exported="true"></service>
+
+        <service
+            android:name=".MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+
+        <activity
+            android:name=".ItemDetails"
+            android:label="Détails du produit"
+            android:parentActivityName=".ListesFragment">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ListesFragment"/>
+        </activity>
+
+        <activity
+            android:name=".Reglages"
+            android:label="Réglages"></activity>
+        <activity
+            android:name=".Enseignes"
+            android:label="Lite des enseignes"
+            android:parentActivityName=".Reglages" />
+        <activity
+            android:name=".FAQ"
+            android:label="FAQ"
+            android:parentActivityName=".Reglages" />
+        <activity
+            android:name=".Langues"
+            android:label="Langues"
+            android:parentActivityName=".Reglages" />
+        <activity
+            android:name=".Suggestions"
+            android:label="Suggestions"
+            android:parentActivityName=".Reglages" />
+        <activity
+            android:name=".Aide"
+            android:label="Aide"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".Error_message"
+            android:label="Second Activity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".ConnectivityReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
