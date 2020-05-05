@@ -128,6 +128,7 @@ public class ListesFragment extends Fragment {
             products = (ArrayList<Product>) db.getAllProducts();
             for (Product product : products) {
                 productItemsList.add(new ProductItem(product.getName(), Double.toString(product.getActual_price())));
+                System.out.println("INSIDE ListesFragments, for "+product.getName()+" the price is "+product.getActual_price());
             }
 
             delete_all.setVisibility(v.VISIBLE);

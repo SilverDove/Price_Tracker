@@ -39,7 +39,7 @@ public class Information_Product {
             while( (tmp = bis.read(bytes) ) != -1 ) {//Until we are not at the end of the HTML page
                 String chaine = new String(bytes,0,tmp);//convert the string into character
                 fos.write(chaine.getBytes());//Write in a file
-                System.out.print(chaine); //Print the string
+                //System.out.print(chaine); //Print the string
             }
         }catch(FileNotFoundException e){
             e.printStackTrace();

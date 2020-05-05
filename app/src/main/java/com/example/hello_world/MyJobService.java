@@ -24,8 +24,8 @@ public class MyJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {//Call when execute our Job
-        Toast.makeText(this, "START JOB", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "START JOB");
+        //Toast.makeText(this, "START JOB", Toast.LENGTH_SHORT).show();
+        //Log.d(TAG, "START JOB");
         notif = new Notification(this);
         db = new DBHandler(this);
         doBackgroundWork(params);
@@ -73,7 +73,7 @@ public class MyJobService extends JobService {
 
         if (TesterConnectionHTTP.isNetworkAvailable() == false) {
             //Display a message to say that there is no internet connection
-            Toast.makeText(this, "NO INTERNET CONNECTION JOBSERVICE", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "NO INTERNET CONNECTION JOBSERVICE", Toast.LENGTH_SHORT).show();
         } else {
             System.out.println("INTERNET CONNECTION");
             double actual_price, last_price;
@@ -98,9 +98,14 @@ public class MyJobService extends JobService {
                 produit.setActual_price(actual_price);
                 produit.setDate_suivie(format.format(calendrier.getTime()));
 
+                db = new DBHandler(this);
+                db.deleteProduct(produit);
+                db.addProduct(produit);
+
                 if (actual_price < last_price) {
                     //Notification
                     notif.sendNotification(produit);
+                    System.out.println("INSIDE ItemDetails, for "+produit.getName()+" the price is "+produit.getActual_price());
                     System.out.println("SMALLER ! NEED TO NOTIFY THE USER");
                 } else {
                     System.out.println("NOT SMALLER");
@@ -114,8 +119,8 @@ public class MyJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {//Call by the system when our Job has been cancelled
-        Toast.makeText(this, "JOB CANCELLED BEFORE COMPLETION", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "JOB CANCELLED BEFORE COMPLETION");
+        //Toast.makeText(this, "JOB CANCELLED BEFORE COMPLETION", Toast.LENGTH_SHORT).show();
+        //Log.d(TAG, "JOB CANCELLED BEFORE COMPLETION");
         jobCancelled = true;
         return false;//true: indicates that we want to reschedule our job
     }
