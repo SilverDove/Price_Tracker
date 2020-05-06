@@ -82,6 +82,11 @@ public class ListesFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(true);
                         // Update list from database
                         //startService(getView());
+                        Information_Product infoProduct = new Information_Product();
+                        products = (ArrayList<Product>) db.getAllProducts();
+                        for (Product product : products) {
+                            infoProduct.updatePrice(product, getContext());
+                        }
                         refreshRecyclerView(getView());
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.notifyDataSetChanged();//Refresh RecyclerView

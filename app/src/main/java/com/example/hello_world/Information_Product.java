@@ -2,6 +2,7 @@ package com.example.hello_world;
 
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.BufferedReader; //https://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html
 import java.io.File;
@@ -14,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 import static android.content.Context.MODE_PRIVATE;
@@ -196,4 +200,56 @@ public class Information_Product {
         }
     }
 
+    public double  updatePrice(Product produit, Context context){
+        double last_price = -1.0;
+
+        if (TesterConnectionHTTP.isNetworkAvailable() == false) {
+            //Display a message to say that there is no internet connection
+            Toast.makeText(context, "NO INTERNET CONNECTION JOBSERVICE", Toast.LENGTH_SHORT).show();
+        } else {
+            System.out.println("INTERNET CONNECTION");
+            double actual_price;
+
+            try {
+                //Information about the product
+                String URL = produit.getLink();
+                last_price = produit.getActual_price();
+
+                //Retrieve price directly depending on the website
+                Information_Product.Get_HTML(URL, produit.getName(), context);
+                if(produit.getLink().indexOf("electrodepot",10)!=-1){
+                    actual_price = Information_Product.Find_price_ElectroDepot(produit.getName(), context);
+                }else{
+                    actual_price = Information_Product.Find_price_AssoInter(produit.getName(), context);
+                }
+
+                //Get the date and time
+                Locale localeFR = new Locale("FR", "fr");
+                Calendar calendrier = Calendar.getInstance(localeFR);
+                DateFormat format = DateFormat.getDateTimeInstance();
+                format.setCalendar(calendrier);
+                System.out.println(format.format(calendrier.getTime()));
+
+                //Update product
+                produit.setActual_price(actual_price);
+                produit.setDate_suivie(format.format(calendrier.getTime()));
+
+                DBHandler db = new DBHandler(context);
+                db.deleteProduct(produit);
+                db.addProduct(produit);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return last_price;
+    }
+
+    public void SendNotification(Product produit, Notification notif, double actual_price, double last_price){
+        //Send a notification if the price drops
+        if (actual_price < last_price) {
+            notif.sendNotification(produit);//Notification
+        }
+    }
 }
