@@ -196,9 +196,4 @@ public class Information_Product {
         }
     }
 
-
-
-
-
-
 }
