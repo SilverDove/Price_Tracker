@@ -249,7 +249,13 @@ public class Information_Product {
     public void SendNotification(Product produit, Notification notif, double actual_price, double last_price){
         //Send a notification if the price drops
         if (actual_price < last_price) {
-            notif.sendNotification(produit);//Notification
+            if(produit.getNotif_Under() == false){
+                notif.sendNotification(produit);//Notification
+            }else{
+                if (actual_price < produit.getPrice_Notif() ){
+                    notif.sendNotification(produit);//Notification
+                }
+            }
         }
     }
 }

@@ -82,7 +82,7 @@ public class ItemDetails extends AppCompatActivity {
         TextView nameOfProduct = (TextView) findViewById(R.id.ProductName);
         nameOfProduct.setText(p.getName());
         TextView dateOfProduct = (TextView) findViewById(R.id.date);
-        dateOfProduct.setText(p.getDate_suivie());
+        dateOfProduct.setText(p.getLast_Date());
         TextView firstPriceOfProduct = (TextView) findViewById(R.id.initialprice);
         firstPriceOfProduct.setText(String.valueOf(p.getInitial_price()));
         TextView actualPriceOfProduct = (TextView) findViewById(R.id.actualprice);
