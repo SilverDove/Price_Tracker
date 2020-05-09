@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ItemDetails extends AppCompatActivity {
         db = new DBHandler(this);
         List<Product> listproduct = db.getAllProducts();
         p = listproduct.get(position);
-
+        Toast.makeText(this, "INSIDE ItemDetails, for "+p.getName()+" the price is "+p.getActual_price(), Toast.LENGTH_SHORT).show();
         displayInfo();
 
     }

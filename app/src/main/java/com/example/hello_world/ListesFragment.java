@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 
 
 public class ListesFragment extends Fragment {
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
@@ -52,7 +55,47 @@ public class ListesFragment extends Fragment {
         buildRecyclerView(v);
         onButton_AllDeleteClickListener(delete_all);
 
+        MySwipeRefreshLayout(v);
+
         return v;
+    }
+
+    public void MySwipeRefreshLayout(View v){
+        // SwipeRefreshLayout
+        swipeRefreshLayout=v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /**
+                 * Showing Swipe Refresh animation on activity create
+                 * As animation won't start on onCreate, post runnable is used
+                 */
+                swipeRefreshLayout.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Refreshing list",Toast.LENGTH_LONG).show();
+                        swipeRefreshLayout.setRefreshing(true);
+                        // Update list from database
+                        //startService(getView());
+                        Information_Product infoProduct = new Information_Product();
+                        products = (ArrayList<Product>) db.getAllProducts();
+                        for (Product product : products) {
+                            infoProduct.updatePrice(product, getContext());
+                        }
+                        refreshRecyclerView(getView());
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();//Refresh RecyclerView
+                        swipeRefreshLayout.setRefreshing(false);//stop refreshing
+
+                    }
+                });
+            }
+        });
     }
 
     public void onButton_AllDeleteClickListener(Button all_delete){
@@ -119,7 +162,6 @@ public class ListesFragment extends Fragment {
             stopService(v);
         }
     }
-
 
     public void refreshRecyclerView(View v){
         int count = db.getProductsCount();
