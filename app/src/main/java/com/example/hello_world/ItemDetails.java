@@ -2,11 +2,14 @@ package com.example.hello_world;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.ListIterator;
 
 public class ItemDetails extends AppCompatActivity {
     private DBHandler db;
@@ -24,10 +28,7 @@ public class ItemDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_item);
-        /*getSupportActionBar().setTitle("Details du produit");
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);*/
-
+        getSupportActionBar().setTitle("Details du produit");
         Intent intent = getIntent();
         int position = intent.getIntExtra(ListesFragment.EXTRA_POSITION,0);
 
@@ -39,13 +40,25 @@ public class ItemDetails extends AppCompatActivity {
 
     }
 
-    //Determines if Action bar items are selected. If true then do corresponding actions
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar, menu);
+        return true;
+    }
+
+    //Determines if Action bar items are selected. If true then do corresponding actions
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()){
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+            case R.id.action_home:
+                FragmentManager fm = getSupportFragmentManager();
+                System.out.println("GO TO PREVIOUS FRAGMENT PLEASE");
+                fm.popBackStack();
+                //NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

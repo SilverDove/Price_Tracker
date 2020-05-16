@@ -27,14 +27,17 @@ public class Information_Product {
     public static void Get_HTML(String URL_String, String Product_Name, Context context) throws Exception {
         //retrieve the web page
         System.out.println("IN THE GET8HTML METHOD");
-        HttpURLConnection conn = (HttpURLConnection) new URL(
-                URL_String).openConnection();//returns  connection to the remote object referred to by the URL
-        conn.connect();//opens a communications link to the resource referenced by the URL
-        System.out.println("connection opens");
-
-        BufferedInputStream bis = new BufferedInputStream(conn.getInputStream()/*an input stream that reads from this open connection*/);//Read the response. If it has no body, that method returns an empty stream
+        HttpURLConnection conn = null;
+        BufferedInputStream bis = null;
         FileOutputStream fos=null;
         try{
+
+            conn = (HttpURLConnection) new URL(
+                    URL_String).openConnection();//returns  connection to the remote object referred to by the URL
+            conn.connect();//opens a communications link to the resource referenced by the URL
+            System.out.println("connection opens");
+
+            bis = new BufferedInputStream(conn.getInputStream()/*an input stream that reads from this open connection*/);//Read the response. If it has no body, that method returns an empty stream
 
             byte[] bytes = new byte[2040];//create an aray of bytes
             int tmp;
@@ -50,20 +53,24 @@ public class Information_Product {
         }catch (IOException e){
             e.printStackTrace();
         }finally {
-            if (fos != null){
-                fos.close();
-            }
+            fos.close();
+            bis.close();
+            conn.disconnect();
         }
     }
 
     public static double Find_price_AssoInter(String pathToFile, Context context){
         double real_price = 0; //price at the end
+        FileInputStream fis = null;
+        InputStreamReader isr = null;
+        BufferedReader reader = null;
+
         try {
 
-            FileInputStream fis =context.openFileInput(pathToFile);
+            fis =context.openFileInput(pathToFile);
             System.out.println("open file");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader reader = new BufferedReader(isr);
+            isr = new InputStreamReader(fis);
+            reader = new BufferedReader(isr);
             String ligne;
 
             //Initialization of variables
@@ -120,84 +127,17 @@ public class Information_Product {
 
         } catch (Exception ex){
             System.err.println("Error. "+ex.getMessage());
+        }finally {
+            try{
+                fis.close();
+                isr.close();
+                reader.close();
+            }catch (IOException e){
+                System.err.println("Error. "+e.getMessage());
+            }
         }
 
         return real_price;
-    }
-
-
-    public static double Find_price_ElectroDepot(String file, Context context){
-        /* Implemented for articles from Electro depot and may not work for other sites because of the
-         * number of spaces in front of the line where the price is.*/
-        System.out.println("IN THE FIND_PRICE METHOD");
-        //Price is at line 987 for this file if you want to try the program while modifying the price
-        FileInputStream fis=null;
-
-        try {
-            fis =context.openFileInput(file);
-            System.out.println("open file");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            String ligne;
-            //Initialization of variables
-            int price_length = 0;
-            int decimal_length = 0;
-            double price = 0; //integer part of the price
-            double decimal = 0; //decimal part of the price
-            double real_price = 0; //price at the end
-            int point = 0; //flag
-            int counter = 1;
-            int i;
-            while((ligne = br.readLine()) != null){ //goes through the file
-                System.out.println("Not end of the file");
-                if(ligne.contains("itemprop=\"price\" content=")){ //if we detect the line with the price
-                    System.out.println("DETECT LINE WHERE THERE IS THE PRICE");
-                    for (i = 40 ; i < ligne.length()-4 ;i++) { //check if the price has a decimal part
-                        if(ligne.charAt(i)=='.') point = 1; //it means that it has a decimal part
-                    }
-                    for (i = 40 ; i < ligne.length()-4 ;i++) { //loop to calculate the length of the integer part
-                        if(ligne.charAt(i)!='.') {
-                            //System.out.println(ligne.charAt(i));
-                            price_length++;
-                        }else { break;}
-                    }
-                    if(point == 1) { //if there is a decimal part
-                        decimal_length =ligne.length() - 44 - price_length; //computes the length of the decimal part
-                        //System.out.println(decimal_length);
-                        for (i = 40 ; i < ligne.length() -decimal_length - 4 ;i++) { //go again through the line and get the integer part of the price
-                            int a=Character.getNumericValue(ligne.charAt(i)); //casts a char to an int
-                            price = price + (a*(Math.pow(10, price_length-1)));//a becomes a double because of the product with a double
-                            //System.out.println(price);
-                            price_length--;
-                        }
-                        for (int k = i+1; k < ligne.length()-4 ;k++) { //computes the decimal part with the same method
-                            //System.out.println(ligne.charAt(k));
-                            int b=Character.getNumericValue(ligne.charAt(k));
-                            decimal = decimal + (b*(Math.pow(10, -(counter))));
-                            //System.out.println(decimal);
-                            counter++;
-                        }
-                    }else {//if it has no decimal part
-                        for (i = 40 ; i < ligne.length() - 4 ;i++) {
-                            int a=Character.getNumericValue(ligne.charAt(i));
-                            price = price + (a*(Math.pow(10, price_length-1)));
-                            //System.out.println(price);
-                            price_length--;
-                        }
-                    }
-                }
-            }
-            real_price = price + decimal;//sums the two parts
-            System.out.println("Price is " + real_price);//displays the price
-            return real_price;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return -1;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     public double  updatePrice(Product produit, Context context){
@@ -216,12 +156,8 @@ public class Information_Product {
                 last_price = produit.getActual_price();
 
                 //Retrieve price directly depending on the website
-                Information_Product.Get_HTML(URL, produit.getName(), context);
-                if(produit.getLink().indexOf("electrodepot",10)!=-1){
-                    actual_price = Information_Product.Find_price_ElectroDepot(produit.getName(), context);
-                }else{
-                    actual_price = Information_Product.Find_price_AssoInter(produit.getName(), context);
-                }
+                Get_HTML(URL, produit.getName(), context);
+                actual_price = Find_price_AssoInter(produit.getName(), context);
 
                 //Get the date and time
                 Locale localeFR = new Locale("FR", "fr");
@@ -231,6 +167,7 @@ public class Information_Product {
                 System.out.println(format.format(calendrier.getTime()));
 
                 //Update product
+                System.out.println("previous price was: "+produit.getActual_price()+" and now it's "+actual_price);
                 produit.setActual_price(actual_price);
                 produit.setDate_suivie(format.format(calendrier.getTime()));
 

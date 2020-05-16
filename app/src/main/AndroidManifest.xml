@@ -28,12 +28,7 @@
 
         <activity
             android:name=".ItemDetails"
-            android:label="Détails du produit"
-            android:parentActivityName=".ListesFragment">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListesFragment"/>
+            android:label="Détails du produit">
         </activity>
 
         <activity

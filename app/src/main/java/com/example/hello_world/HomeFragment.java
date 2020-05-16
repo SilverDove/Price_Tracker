@@ -77,11 +77,8 @@ public class HomeFragment extends Fragment {
             Display_Error();
         }else try {
             Information_Product.Get_HTML(URL, Name, getContext());
-            if(answer==1){
-                Price_product = Information_Product.Find_price_ElectroDepot(Name, getContext());
-            }else{
-                Price_product = Information_Product.Find_price_AssoInter(Name, getContext());
-            }
+            Price_product = Information_Product.Find_price_AssoInter(Name, getContext());
+
             /*GET THE DATE AND TIME*/
             Locale localeFR = new Locale("FR","fr");
             Calendar calendrier = Calendar.getInstance(localeFR );

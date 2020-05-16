@@ -31,10 +31,7 @@ public class ListesFragment extends Fragment {
     private ArrayList<Product> products;
     private DBHandler db;
 
-    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
-    private static final int NOTIFICATION_ID = 0;
     public static final String EXTRA_POSITION = "com.example.hello_world.EXTRA_TEXT";
-    private NotificationManager mNotifyManager;
     Notification notif;
 
     private Button delete_all;
