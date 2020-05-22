@@ -162,9 +162,34 @@ public class Information_Product {
                     actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta property=\"og:description\" content=\"Price : ", "€\" />", context);
                 }
 
+                if (URL.indexOf("darty",10)!=-1) { //If shop is darty
+                    System.out.println("It's darty!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta itemprop=\"price\" content=\"", "\" >", context);
+                }
+
                 if (URL.indexOf("grosbill",10)!=-1) { //If shop is grobill
                     System.out.println("It's grobill!");
                     actual_price = Information_Product.getPricefromWebpage(produit.getName(), "var product_price_tag = '", "';", context);
+                }
+
+                if (URL.indexOf("ikea",10)!=-1) { //If shop is ikea
+                    System.out.println("It's ikea!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "data-product-price=\"", "\" data-currency=\"EUR\"", context);
+                }
+
+                if (URL.indexOf("footlocker",10)!=-1) { //If shop is footlocker
+                    System.out.println("It's footlocker!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta itemprop=\"price\" content=\"", "\"/><span>&euro;", context);
+                }
+
+                if (URL.indexOf("castorama",10)!=-1) { //If shop is castorama
+                    System.out.println("It's castorama!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<span class=\"pricing\" data-currency=\"EUR\" data-locale=\"fr_FR\" data-value=\"", "\">", context);
+                }
+
+                if (URL.indexOf("decathlon",10)!=-1) { //If shop is decathlon
+                    System.out.println("It's decathlon!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "\"price\": \"", "\",", context);
                 }
 
                 //Get the date and time

@@ -21,7 +21,7 @@ public class TesterConnectionHTTP extends Activity {
 
             System.out.println("Connection Successful");
 
-            if(URL_String.indexOf("electrodepot",10)!=-1 || URL_String.indexOf("assointeresiea",8)!=-1 || URL_String.indexOf("grosbill",10)!=-1) {
+            if(URL_String.indexOf("electrodepot",10)!=-1 || URL_String.indexOf("assointeresiea",8)!=-1 || URL_String.indexOf("grosbill",10)!=-1 || URL_String.indexOf("darty",10)!=-1 || URL_String.indexOf("ikea",10)!=-1 || URL_String.indexOf("footlocker",10)!=-1 ||URL_String.indexOf("castorama",10)!=-1 || URL_String.indexOf("decathlon",10)!=-1) {
                 return 1;//true
             }else{
                 return -1;//displayError
