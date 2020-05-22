@@ -21,16 +21,12 @@ public class TesterConnectionHTTP extends Activity {
 
             System.out.println("Connection Successful");
 
-            //int pos = URL_String.indexOf("electrodepot",10);//shop compatible with the app
-            if (URL_String.indexOf("electrodepot",10)==-1 && URL_String.indexOf("assointeresiea",8)==-1){//If the URL is not compatible with the app
-                return -1;
-            }else {//Otherwise
-                if(URL_String.indexOf("electrodepot",10)!=-1) {
-                    return 1;//electrodepot
-                }else{
-                    return 0;//assoInter
-                }
+            if(URL_String.indexOf("electrodepot",10)!=-1 || URL_String.indexOf("assointeresiea",8)!=-1 || URL_String.indexOf("grosbill",10)!=-1) {
+                return 1;//true
+            }else{
+                return -1;//displayError
             }
+
         }
         catch (IOException e){
             System.out.println("Internet Not Connected");

@@ -14,7 +14,7 @@ import java.util.List;
 public class DBHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
     private static final String DATABASE_NAME = "ProductInfo";
     // Contacts table name
@@ -28,7 +28,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String PRODUCT_IP = "initial_price";
     private static final String PRODUCT_AP = "actual_price";
     private static final String PRODUCT_DS = "date_suivie";
-    private static final String PRODUCT_LD = "last_Date";
+    private static final String PRODUCT_FD = "first_Date";
 
 
     public DBHandler(Context context) {
@@ -42,7 +42,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + PRODUCT_TU+" INTEGER NOT NULL," + PRODUCT_NU +" BOOLEAN NOT NULL, "
                 + PRODUCT_PN +" INTEGER NOT NULL ," + PRODUCT_IP +" INTEGER NOT NULL , "
                 + PRODUCT_AP +" INTEGER NOT NULL ," + PRODUCT_DS + " TEXT NOT NULL ,"
-                + PRODUCT_LD + " TEXT NOT NULL " +" ) ";
+                + PRODUCT_FD + " TEXT NOT NULL " +" ) ";
         db.execSQL(CREATE_CONTACTS_TABLE);
 
         Log.d("Adding ", "Database created");
@@ -69,7 +69,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(PRODUCT_IP, product.getInitial_price()); // Product Initial_price
         values.put(PRODUCT_AP, product.getActual_price()); // Product Actual_price
         values.put(PRODUCT_DS, product.getDate_suivie()); // Product Date_suivie
-        values.put(PRODUCT_LD, product.getLast_Date()); // Product Last_Date
+        values.put(PRODUCT_FD, product.getFirst_Date()); // Product First_Date
 
         // Inserting Row
         db.insert(TABLE_PRODUCTS, null, values);
@@ -82,7 +82,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public Product getProduct(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_PRODUCTS, new String[]{PRODUCT_NAME,
-                        PRODUCT_LINK, PRODUCT_TU, PRODUCT_NU, PRODUCT_PN, PRODUCT_IP, PRODUCT_AP, PRODUCT_DS, PRODUCT_LD}, PRODUCT_NAME + "=?",
+                        PRODUCT_LINK, PRODUCT_TU, PRODUCT_NU, PRODUCT_PN, PRODUCT_IP, PRODUCT_AP, PRODUCT_DS, PRODUCT_FD}, PRODUCT_NAME + "=?",
                 new String[]{String.valueOf(name)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -92,7 +92,7 @@ public class DBHandler extends SQLiteOpenHelper {
         contact.setNotif_Under(Boolean.parseBoolean(cursor.getString(3)));
         contact.setPrice_Notif(Double.parseDouble(cursor.getString(4)));
         contact.setActual_price(Double.parseDouble(cursor.getString(6)));
-        contact.setLast_Date(cursor.getString(8));
+        contact.setFirst_Date(cursor.getString(8));
 
         // return product
         return contact;
@@ -123,7 +123,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 product.setNotif_Under(Boolean.parseBoolean(cursor.getString(3)));
                 product.setPrice_Notif(Double.parseDouble(cursor.getString(4)));
                 product.setActual_price(Double.parseDouble(cursor.getString(6)));
-                product.setLast_Date(cursor.getString(8));
+                product.setFirst_Date(cursor.getString(8));
                 // Adding contact to list
                 productList.add(product);
             } while (cursor.moveToNext());

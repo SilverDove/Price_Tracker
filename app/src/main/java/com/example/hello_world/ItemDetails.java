@@ -3,11 +3,7 @@ package com.example.hello_world;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,10 +11,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.ListIterator;
 
 public class ItemDetails extends AppCompatActivity {
     private DBHandler db;
@@ -35,7 +29,7 @@ public class ItemDetails extends AppCompatActivity {
         db = new DBHandler(this);
         List<Product> listproduct = db.getAllProducts();
         p = listproduct.get(position);
-        Toast.makeText(this, "INSIDE ItemDetails, for "+p.getName()+" the price is "+p.getActual_price(), Toast.LENGTH_SHORT).show();
+        System.out.println("Option: "+p.getNotif_Under()+" under "+p.getPrice_Notif());
         displayInfo();
 
     }
@@ -57,7 +51,7 @@ public class ItemDetails extends AppCompatActivity {
             case R.id.action_home:
                 FragmentManager fm = getSupportFragmentManager();
                 System.out.println("GO TO PREVIOUS FRAGMENT PLEASE");
-                fm.popBackStack();
+
                 //NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
@@ -95,7 +89,7 @@ public class ItemDetails extends AppCompatActivity {
         TextView nameOfProduct = (TextView) findViewById(R.id.ProductName);
         nameOfProduct.setText(p.getName());
         TextView dateOfProduct = (TextView) findViewById(R.id.date);
-        dateOfProduct.setText(p.getLast_Date());
+        dateOfProduct.setText(p.getFirst_Date());
         TextView firstPriceOfProduct = (TextView) findViewById(R.id.initialprice);
         firstPriceOfProduct.setText(String.valueOf(p.getInitial_price()));
         TextView actualPriceOfProduct = (TextView) findViewById(R.id.actualprice);

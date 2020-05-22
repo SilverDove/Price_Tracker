@@ -77,7 +77,20 @@ public class HomeFragment extends Fragment {
             Display_Error();
         }else try {
             Information_Product.Get_HTML(URL, Name, getContext());
-            Price_product = Information_Product.Find_price_AssoInter(Name, getContext());
+            if (URL.indexOf("electrodepot",10)!=-1) { //If shop is electrodepot
+                System.out.println("It's electrodepot!");
+                Price_product = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\" /> <!-- Offre de remboursement -->", getContext());
+            }
+
+            if (URL.indexOf("assointeresiea",7)!=-1) { //If shop is assointer
+                System.out.println("It's assointer!");
+                Price_product = Information_Product.getPricefromWebpage(Name, "<meta property=\"og:description\" content=\"Price : ", "€\" />", getContext());
+            }
+
+            if (URL.indexOf("grosbill",10)!=-1) { //If shop is grobill
+                System.out.println("It's grobill!");
+               Price_product = Information_Product.getPricefromWebpage(Name, "var product_price_tag = '", "';", getContext());
+            }
 
             /*GET THE DATE AND TIME*/
             Locale localeFR = new Locale("FR","fr");

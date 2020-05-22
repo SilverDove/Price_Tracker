@@ -11,7 +11,7 @@ public class Product {
     private double Initial_price;
     private double Actual_price;
     private String Date_suivie;
-    private String last_Date;
+    private String first_Date;
 
     public Product(String pName, String pLink, double pInitial_price, String pDate_suivie){ // We create our product identity
         Name = pName;
@@ -22,7 +22,7 @@ public class Product {
         Initial_price = pInitial_price;
         Actual_price = pInitial_price; // During the creation it's the same price as initial
         Date_suivie = pDate_suivie;
-        last_Date = pDate_suivie; //During the creation, it's the same date as data_suivie because it's the last time we checked the price on the website
+        first_Date = pDate_suivie; //During the creation, it's the same date as data_suivie because it's the last time we checked the price on the website
     }
 
     //*************   ACCESSEURS *************
@@ -69,8 +69,8 @@ public class Product {
     }
 
     //Return last date
-    public String getLast_Date() {
-        return last_Date;
+    public String getFirst_Date() {
+        return first_Date;
     }
 
     //*************   MUTATEURS   *************
@@ -124,7 +124,7 @@ public class Product {
     }
 
     //Set Last_date
-    public void setLast_Date(String last_Date) {
-        this.last_Date = last_Date;
+    public void setFirst_Date(String first_Date) {
+        this.first_Date = first_Date;
     }
 }

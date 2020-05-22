@@ -59,51 +59,53 @@ public class Information_Product {
         }
     }
 
-    public static double Find_price_AssoInter(String pathToFile, Context context){
-        double real_price = 0; //price at the end
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
-        BufferedReader reader = null;
+    public static double getPricefromWebpage(String pathToFile, String before, String after, Context context){
+        double real_price = 0.0; //price at the end
 
         try {
-
-            fis =context.openFileInput(pathToFile);
+            FileInputStream fis =context.openFileInput(pathToFile);
             System.out.println("open file");
-            isr = new InputStreamReader(fis);
-            reader = new BufferedReader(isr);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
+             //opens a file from a path
             String ligne;
-
             //Initialization of variables
             int price_length = 0;
             int decimal_length = 0;
             double price = 0; //integer part of the price
             double decimal = 0; //decimal part of the price
-
             int point = 0; //flag
             int counter = 1;
             int i;
             while((ligne = reader.readLine()) != null){ //goes through the file
-                if(ligne.contains("<p>Price : ")){ //if we detect the line with the price
-                    System.out.println("FIND LIGNE WITH PRICE");
-                    for (i = 14 ; i < ligne.length()-5 ;i++) { //check if the price has a decimal part
+                if(ligne.contains(before)){ //if we detect the line with the price
+                    //int beginning = ligne.indexOf("<meta itemprop=\"price\" content=\"");
+                    int beginning = ligne.indexOf(before);
+                    //int end = ligne.indexOf("\" /> <!-- Offre de remboursement");
+                    //int end = ligne.indexOf("\" >");
+                    int end = ligne.indexOf(after);
+                    beginning = beginning + before.length();
+                    //end = end +1;
+                    //System.out.println(ligne + "\n" + beginning + "\n" + end);
+                    for (i = beginning ; i < end ;i++) { //check if the price has a decimal part
                         if(ligne.charAt(i)=='.') point = 1; //it means that it has a decimal part
                     }
-                    for (i = 14 ; i < ligne.length()-5 ;i++) { //loop to calculate the length of the integer part
+                    for (i = beginning ; i < end ;i++) { //loop to calculate the length of the integer part
                         if(ligne.charAt(i)!='.') {
                             //System.out.println(ligne.charAt(i));
                             price_length++;
                         }else { break;}
                     }
                     if(point == 1) { //if there is a decimal part
-                        decimal_length =ligne.length() - 19 - price_length; //computes the length of the decimal part
+                        decimal_length =end- beginning - price_length - 1; //computes the length of the decimal part
                         //System.out.println(decimal_length);
-                        for (i = 14 ; i < ligne.length() -decimal_length - 5 ;i++) { //go again through the line and get the integer part of the price
+                        for (i = beginning ; i < end - decimal_length - 1;i++) { //go again through the line and get the integer part of the price
                             int a=Character.getNumericValue(ligne.charAt(i)); //casts a char to an int
                             price = price + (a*(Math.pow(10, price_length-1)));//a becomes a double because of the product with a double
-                            //System.out.println(price);
+                            //System.out.println(price + "\ni = " + i);
                             price_length--;
                         }
-                        for (int k = i+1; k < ligne.length()-5 ;k++) { //computes the decimal part with the same method
+                        for (int k = i+1; k < end ;k++) { //computes the decimal part with the same method
                             //System.out.println(ligne.charAt(k));
                             int b=Character.getNumericValue(ligne.charAt(k));
                             decimal = decimal + (b*(Math.pow(10, -(counter))));
@@ -111,7 +113,7 @@ public class Information_Product {
                             counter++;
                         }
                     }else {//if it has no decimal part
-                        for (i = 14 ; i < ligne.length() - 5 ;i++) {
+                        for (i = beginning ; i < end ;i++) {
                             int a=Character.getNumericValue(ligne.charAt(i));
                             price = price + (a*(Math.pow(10, price_length-1)));
                             //System.out.println(price);
@@ -123,21 +125,14 @@ public class Information_Product {
                 }
             }
             real_price = price + decimal;//sums the two parts
-            System.out.println("HEY HEY Price is " + real_price);//displays the price
+            System.out.println("Price is " + real_price);//displays the price
 
         } catch (Exception ex){
             System.err.println("Error. "+ex.getMessage());
-        }finally {
-            try{
-                fis.close();
-                isr.close();
-                reader.close();
-            }catch (IOException e){
-                System.err.println("Error. "+e.getMessage());
-            }
         }
 
         return real_price;
+
     }
 
     public double  updatePrice(Product produit, Context context){
@@ -148,7 +143,7 @@ public class Information_Product {
             Toast.makeText(context, "NO INTERNET CONNECTION JOBSERVICE", Toast.LENGTH_SHORT).show();
         } else {
             System.out.println("INTERNET CONNECTION");
-            double actual_price;
+            double actual_price = 0.0;
 
             try {
                 //Information about the product
@@ -157,7 +152,20 @@ public class Information_Product {
 
                 //Retrieve price directly depending on the website
                 Get_HTML(URL, produit.getName(), context);
-                actual_price = Find_price_AssoInter(produit.getName(), context);
+
+                if (URL.indexOf("electrodepot",10)!=-1){ //If shop is electrodepot
+                        actual_price= getPricefromWebpage(produit.getName(),"<meta itemprop=\"price\" content=\"", "\" /> <!-- Offre de remboursement -->", context);
+                }
+
+                if (URL.indexOf("assointeresiea",7)!=-1) { //If shop is assointer
+                    System.out.println("It's assointer!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta property=\"og:description\" content=\"Price : ", "€\" />", context);
+                }
+
+                if (URL.indexOf("grosbill",10)!=-1) { //If shop is grobill
+                    System.out.println("It's grobill!");
+                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "var product_price_tag = '", "';", context);
+                }
 
                 //Get the date and time
                 Locale localeFR = new Locale("FR", "fr");
