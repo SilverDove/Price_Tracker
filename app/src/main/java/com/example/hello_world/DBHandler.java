@@ -157,4 +157,18 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
     }
+    public void updateActualPrice(Product product, int NewPrice) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET actual_price = "+"'"+NewPrice+"' "+ "WHERE name = "+"'"+product.getName()+"'");
+    }
+
+    public void updateNotificationFrequency(Product product, int NewFrequency) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET time_update = "+"'"+NewFrequency+"' "+ "WHERE name = "+"'"+product.getName()+"'");
+    }
+
+    public void updateNotificationUnder(Product product, boolean NotifUnder) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET notif_under = "+"'"+NotifUnder+"' "+ "WHERE name = "+"'"+product.getName()+"'");
+    }
 }

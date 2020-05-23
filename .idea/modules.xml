@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Price_Tracker.iml" filepath="$PROJECT_DIR$/Price_Tracker.iml" group="Price_Tracker" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Price_Tracker/app" />
+      <module fileurl="file://$PROJECT_DIR$/GitHub_PST.iml" filepath="$PROJECT_DIR$/GitHub_PST.iml" group="GitHub_PST" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="GitHub_PST/app" />
     </modules>
   </component>
 </project>
