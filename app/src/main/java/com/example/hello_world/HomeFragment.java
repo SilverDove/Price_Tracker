@@ -69,28 +69,14 @@ public class HomeFragment extends Fragment {
         int answer=-1;
         double Price_product=-1.0;
 
-        answer= TesterConnectionHTTP.urlValidator(URL);//A VERIFIER (CONNECTION INTERNET)
+        answer= TesterConnectionHTTP.urlValidator(URL, getContext());//A VERIFIER (CONNECTION INTERNET)
         DBHandler db = new DBHandler(getContext());
-        //db.AllDelete();
 
         if (answer==-1){
             Display_Error();
         }else try {
             Information_Product.Get_HTML(URL, Name, getContext());
-            if (URL.indexOf("electrodepot",10)!=-1) { //If shop is electrodepot
-                System.out.println("It's electrodepot!");
-                Price_product = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\" /> <!-- Offre de remboursement -->", getContext());
-            }
-
-            if (URL.indexOf("assointeresiea",7)!=-1) { //If shop is assointer
-                System.out.println("It's assointer!");
-                Price_product = Information_Product.getPricefromWebpage(Name, "<meta property=\"og:description\" content=\"Price : ", "€\" />", getContext());
-            }
-
-            if (URL.indexOf("grosbill",10)!=-1) { //If shop is grobill
-                System.out.println("It's grobill!");
-               Price_product = Information_Product.getPricefromWebpage(Name, "var product_price_tag = '", "';", getContext());
-            }
+            Price_product = Information_Product.ChooseWebsite(URL, Name, getContext());//Return the price of the corresponding website
 
             /*GET THE DATE AND TIME*/
             Locale localeFR = new Locale("FR","fr");

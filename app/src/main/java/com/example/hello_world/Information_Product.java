@@ -2,6 +2,7 @@ package com.example.hello_world;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader; //https://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html
@@ -12,7 +13,9 @@ import java.io.FileOutputStream;
 import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -24,9 +27,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Information_Product {
 
+    private static final String LISTE_ENSEIGNES = "ListEnseignes.txt";
+
     public static void Get_HTML(String URL_String, String Product_Name, Context context) throws Exception {
         //retrieve the web page
-        System.out.println("IN THE GET8HTML METHOD");
+        System.out.println("IN THE GET_HTML METHOD");
         HttpURLConnection conn = null;
         BufferedInputStream bis = null;
         FileOutputStream fos=null;
@@ -46,7 +51,6 @@ public class Information_Product {
             while( (tmp = bis.read(bytes) ) != -1 ) {//Until we are not at the end of the HTML page
                 String chaine = new String(bytes,0,tmp);//convert the string into character
                 fos.write(chaine.getBytes());//Write in a file
-                //System.out.print(chaine); //Print the string
             }
         }catch(FileNotFoundException e){
             e.printStackTrace();
@@ -58,6 +62,86 @@ public class Information_Product {
             conn.disconnect();
         }
     }
+
+    public static void updateCompatibleWebsite(Context context){
+            String listeEnseignes = "electrodepot\n"+"assointeresiea\n"+"darty\n"+"grosbill\n"+"ikea\n"+"footlocker\n"+"castorama\n"+"decathlon";
+
+            try {
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(LISTE_ENSEIGNES, Context.MODE_PRIVATE));
+                outputStreamWriter.write(listeEnseignes);
+                outputStreamWriter.close();
+
+                System.out.println("List of all website in the file is "+getListCompatibleWebsite(context));
+
+            }catch (IOException e) {
+                Log.e("Exception", "File write failed: " + e.toString());
+            }
+    }
+
+    public static String getListCompatibleWebsite(Context context){
+
+        String ret = "";
+        try {
+            InputStream inputStream = context.openFileInput(LISTE_ENSEIGNES);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append("\n").append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+        return ret;
+    }
+
+    public static String getNameCompatibleWebsite(Context context, String pathToWebsite){
+
+        updateCompatibleWebsite(context);//create file with all the shops inside
+
+        String ret = "";
+        try {
+            InputStream inputStream = context.openFileInput(LISTE_ENSEIGNES);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null) {
+                    if(pathToWebsite.indexOf(receiveString,8)!=-1){//If the website is compatible
+                        stringBuilder.append(receiveString);
+                        break;
+                    }
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        System.out.println("The website is from "+ret);
+
+        return ret;
+    }
+
 
     public static double getPricefromWebpage(String pathToFile, String before, String after, Context context){
         double real_price = 0.0; //price at the end
@@ -135,10 +219,58 @@ public class Information_Product {
 
     }
 
+    public static double ChooseWebsite(String URL, String Name, Context context){
+        Double actual_price = 0.0;
+
+        String nameWebsite = getNameCompatibleWebsite(context, URL);
+
+        System.out.println("In the function ChooseWebsite, the name is "+ nameWebsite);
+
+        switch (nameWebsite){
+            case "electrodepot":
+                actual_price= getPricefromWebpage(Name,"<meta itemprop=\"price\" content=\"", "\" /> <!-- Offre de remboursement -->", context);
+                break;
+
+            case "assointeresiea":
+                actual_price = Information_Product.getPricefromWebpage(Name, "<meta property=\"og:description\" content=\"Price : ", "€\" />", context);
+                break;
+
+            case "darty":
+                actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\" >\n" +
+                        "<meta itemprop=\"priceCurrency\" content=\"EUR\" >", context);
+                break;
+
+            case "grosbill":
+                actual_price = Information_Product.getPricefromWebpage(Name, "var product_price_tag = '", "';", context);
+                break;
+
+            case "ikea":
+                System.out.println("Hello");
+                actual_price = Information_Product.getPricefromWebpage(Name, "data-product-price=\"", "\" data-currency=\"EUR\"", context);
+                break;
+
+            case "footlocker":
+                actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\"/><span>&euro;", context);
+                break;
+
+            case "castorama":
+                actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\"\n" +
+                        "            content=\"", "\" />", context);
+                break;
+
+            case "decathlon":
+                actual_price = Information_Product.getPricefromWebpage(Name, "<meta property=\"product:original_price:amount\" content=\"", "\"/>", context);
+                break;
+        }
+
+        return actual_price;
+
+    }
+
     public double  updatePrice(Product produit, Context context){
         double last_price = -1.0;
 
-        if (TesterConnectionHTTP.isNetworkAvailable() == false) {
+        if (TesterConnectionHTTP.isNetworkAvailable()==false) {
             //Display a message to say that there is no internet connection
             Toast.makeText(context, "NO INTERNET CONNECTION JOBSERVICE", Toast.LENGTH_SHORT).show();
         } else {
@@ -151,46 +283,8 @@ public class Information_Product {
                 last_price = produit.getActual_price();
 
                 //Retrieve price directly depending on the website
-                Get_HTML(URL, produit.getName(), context);
-
-                if (URL.indexOf("electrodepot",10)!=-1){ //If shop is electrodepot
-                        actual_price= getPricefromWebpage(produit.getName(),"<meta itemprop=\"price\" content=\"", "\" /> <!-- Offre de remboursement -->", context);
-                }
-
-                if (URL.indexOf("assointeresiea",7)!=-1) { //If shop is assointer
-                    System.out.println("It's assointer!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta property=\"og:description\" content=\"Price : ", "€\" />", context);
-                }
-
-                if (URL.indexOf("darty",10)!=-1) { //If shop is darty
-                    System.out.println("It's darty!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta itemprop=\"price\" content=\"", "\" >", context);
-                }
-
-                if (URL.indexOf("grosbill",10)!=-1) { //If shop is grobill
-                    System.out.println("It's grobill!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "var product_price_tag = '", "';", context);
-                }
-
-                if (URL.indexOf("ikea",10)!=-1) { //If shop is ikea
-                    System.out.println("It's ikea!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "data-product-price=\"", "\" data-currency=\"EUR\"", context);
-                }
-
-                if (URL.indexOf("footlocker",10)!=-1) { //If shop is footlocker
-                    System.out.println("It's footlocker!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<meta itemprop=\"price\" content=\"", "\"/><span>&euro;", context);
-                }
-
-                if (URL.indexOf("castorama",10)!=-1) { //If shop is castorama
-                    System.out.println("It's castorama!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "<span class=\"pricing\" data-currency=\"EUR\" data-locale=\"fr_FR\" data-value=\"", "\">", context);
-                }
-
-                if (URL.indexOf("decathlon",10)!=-1) { //If shop is decathlon
-                    System.out.println("It's decathlon!");
-                    actual_price = Information_Product.getPricefromWebpage(produit.getName(), "\"price\": \"", "\",", context);
-                }
+                Get_HTML(URL, produit.getName(), context);//Get the HTML code from the webpage
+                actual_price = ChooseWebsite(URL, produit.getName(),context);//Return the price of the corresponding website
 
                 //Get the date and time
                 Locale localeFR = new Locale("FR", "fr");
