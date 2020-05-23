@@ -171,4 +171,9 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET notif_under = "+"'"+NotifUnder+"' "+ "WHERE name = "+"'"+product.getName()+"'");
     }
+
+    public void updateNPriceUnder(Product product, double PriceUnder) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET price_Notif = "+"'"+PriceUnder+"' "+ "WHERE name = "+"'"+product.getName()+"'");
+    }
 }
