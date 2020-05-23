@@ -11,6 +11,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,6 +45,7 @@ public class ListesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listes, container, false);
         getActivity().setTitle("Liste des produits");
+        setHasOptionsMenu(true);
 
         notif = new Notification(getContext());
         db = new DBHandler(v.getContext());
@@ -56,6 +60,26 @@ public class ListesFragment extends Fragment {
 
         return v;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.notification_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.notification_icon:
+                //Appear a new page where can change Notification
+                PopUpClass popUpClass = new PopUpClass();
+                popUpClass.showPopupWindow(getView(), getContext());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     public void MySwipeRefreshLayout(View v){
         // SwipeRefreshLayout

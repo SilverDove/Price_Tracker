@@ -6,7 +6,7 @@ public class Product {
     private String Name; // Stock the name of the product
     private String Link; // Stock the link of the corresponding product
     private int Time_Update; // notification evey X min (min 15min)
-    private boolean Notif_Under; // If the option is switch on so it's equal to one
+    private boolean Notif_Under; // If the option is switch on so it's equal to true
     private double Price_Notif;
     private double Initial_price;
     private double Actual_price;
