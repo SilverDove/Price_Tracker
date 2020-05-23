@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Enseignes extends AppCompatActivity {
 
@@ -22,6 +23,10 @@ public class Enseignes extends AppCompatActivity {
         /*Change the display of the Toolbar*/
         getSupportActionBar().setTitle("Enseignes");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView text_enseignes = findViewById(R.id.listesEnseignes);
+        text_enseignes.setText(Information_Product.getListCompatibleWebsite(this));
+
     }
 
 }

@@ -6,19 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".Enseignes">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="325dp"
-        android:layout_height="523dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/string"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/string"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/listesEnseignes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="Blab Bla"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:layout_below="@id/textView2"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/suggestionEnseignes"
+                android:textSize="18sp"
+                android:layout_below="@id/listesEnseignes"
+                android:layout_marginTop="15dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>

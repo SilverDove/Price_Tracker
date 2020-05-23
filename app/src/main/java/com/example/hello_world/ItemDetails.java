@@ -23,6 +23,8 @@ public class ItemDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_item);
         getSupportActionBar().setTitle("Details du produit");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         int position = intent.getIntExtra(ListesFragment.EXTRA_POSITION,0);
 
@@ -32,31 +34,6 @@ public class ItemDetails extends AppCompatActivity {
         System.out.println("Option: "+p.getNotif_Under()+" under "+p.getPrice_Notif());
         displayInfo();
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar, menu);
-        return true;
-    }
-
-    //Determines if Action bar items are selected. If true then do corresponding actions
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()){
-            case R.id.action_home:
-                FragmentManager fm = getSupportFragmentManager();
-                System.out.println("GO TO PREVIOUS FRAGMENT PLEASE");
-
-                //NavUtils.navigateUpFromSameTask(this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void onCheckboxClicked(View view) {

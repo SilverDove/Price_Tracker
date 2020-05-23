@@ -40,8 +40,7 @@
     <string name="button_francais">Français</string>
     <string name="button_english">English</string>
     <string name="string">Price Tracker n\'est malheureusement pas compatible avec n\'importe quel site de vente…\n\n
-        L\'application a été implémentée pour être compatible avec les sites des enseignes suivantes :\n
-    - Electro depot\n</string>
+        L\'application a été implémentée pour être compatible avec les sites des enseignes suivantes :\n</string>
     <string name="suggestions_text">Vous avez des suggestions afin d\'améliorer Price Tracker ou bien des retours à nous donner ?
         \nN\'hésitez pas à les partager !
         \nNous ferons de notre mieux pour les prendre en compte.\nMerci d\'avance !
@@ -54,4 +53,5 @@
     <string name="added">Dernière fois mis à jour le </string>
     <string name="price">Dernier prix enregistré</string>
     <string name="link">Lien URL</string>
+    <string name="suggestionEnseignes">BONJOUR JE RAJOUTE DU TEXT POUR VOIR SI LE SCROLL BAR FONCTIONNE CAR SINON, ON NE VERRAIT RIEN \n\n\n\nNotre essayons de rajouter le plus d\'enseignes compatibles.\nSi vous avez des requêtes pour des sites spécifiques, contactez-nous grâce à la rubrique \'Suggestions\' accessible via les réglages</string>
 </resources>
