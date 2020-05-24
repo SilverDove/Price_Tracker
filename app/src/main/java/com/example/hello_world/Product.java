@@ -4,40 +4,26 @@ package com.example.hello_world;
 public class Product {
 
     private String Name; // Stock the name of the product
-
     private String Link; // Stock the link of the corresponding product
-
-    private boolean Priority; // Stock the priority level
-
-    private int Numbers_Update; //Stock the numbers for the update ( for example every 5 hours here we stock 5)
-
-    private int Time_Update; // Here we stock if it's hours(Time_update=1), days(Time_update=2), ...
-
-    private boolean Notif_Under; // If the option is switch on so it's equal to one
-
+    private int Time_Update; // notification evey X min (min 15min)
+    private boolean Notif_Under; // If the option is switch on so it's equal to true
     private double Price_Notif;
-
     private double Initial_price;
-
     private double Actual_price;
-
     private String Date_suivie;
+    private String first_Date;
 
     public Product(String pName, String pLink, double pInitial_price, String pDate_suivie){ // We create our product identity
         Name = pName;
         Link = pLink;
+        Time_Update = 15; // Set by default (minutes)
+        Notif_Under = false; // Set by default
+        Price_Notif=0; //Set by default
         Initial_price = pInitial_price;
         Actual_price = pInitial_price; // During the creation it's the same price as initial
         Date_suivie = pDate_suivie;
-
-
-        Price_Notif=0;
-        Priority = false; // Set by default
-        Numbers_Update = 1; // Set by default
-        Time_Update = 2; // Set by default
-        Notif_Under = false; // Set by default
+        first_Date = pDate_suivie; //During the creation, it's the same date as data_suivie because it's the last time we checked the price on the website
     }
-
 
     //*************   ACCESSEURS *************
 
@@ -46,18 +32,6 @@ public class Product {
 
     //Return the link's product
     public String getLink() { return Link; }
-
-    // Return the priority
-    public boolean getPriority()
-    {
-        return Priority;
-    }
-
-    // Return Numbers_Update
-    public int getNumbers_Update()
-    {
-        return Numbers_Update;
-    }
 
     // Return Time_Update
     public int getTime_Update()
@@ -94,6 +68,11 @@ public class Product {
         return Date_suivie;
     }
 
+    //Return last date
+    public String getFirst_Date() {
+        return first_Date;
+    }
+
     //*************   MUTATEURS   *************
 
     //Set the product's name
@@ -108,18 +87,6 @@ public class Product {
         Link = pLink;
     }
 
-    //Set the priority
-    public void setPriority(boolean pPriority)
-    {
-        Priority = pPriority;
-    }
-
-    //Set Numbers_Update
-    public void setNumbers_Update(int pNumbers_Update)
-    {
-        Numbers_Update = pNumbers_Update;
-    }
-
     //Set Time_Update
     public void setTime_Update(int pTime_Update)
     {
@@ -132,6 +99,7 @@ public class Product {
         Notif_Under = pNotif_Under;
     }
 
+    //Set price_notif
     public void setPrice_Notif(double pNotif)
     {
         Price_Notif = pNotif;
@@ -155,4 +123,8 @@ public class Product {
         Date_suivie = pDate_suivie;
     }
 
+    //Set Last_date
+    public void setFirst_Date(String first_Date) {
+        this.first_Date = first_Date;
+    }
 }

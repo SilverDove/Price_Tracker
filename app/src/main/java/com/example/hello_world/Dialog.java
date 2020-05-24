@@ -11,7 +11,7 @@ public class Dialog extends AppCompatDialogFragment {
     public android.app.Dialog onCreateDialog(Bundle savedInstanceState) {//Function which display the content of the Error dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("ERROR")
-                .setMessage("Le lien est incorrect ou incompatible avec notre application.")
+                .setMessage("Le lien est incorrect ou incompatible avec notre application. Il est aussi possible que ce nom soit déjà utilisé.")
                 .setPositiveButton("Réessayez", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

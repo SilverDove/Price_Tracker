@@ -69,19 +69,17 @@ public class HomeFragment extends Fragment {
         int answer=-1;
         double Price_product=-1.0;
 
-        answer= TesterConnectionHTTP.urlValidator(URL);//A VERIFIER (CONNECTION INTERNET)
-        DBHandler db = new DBHandler(getContext());
-        //db.AllDelete();
+        boolean flag = Information_Product.checkUniqueFile(getContext(), Name);
 
-        if (answer==-1){
+        answer= TesterConnectionHTTP.urlValidator(URL, getContext());//A VERIFIER (CONNECTION INTERNET)
+        DBHandler db = new DBHandler(getContext());
+
+        if (answer==-1 || flag == false){//If the URL is invalid or this name is already used
             Display_Error();
         }else try {
             Information_Product.Get_HTML(URL, Name, getContext());
-            if(answer==1){
-                Price_product = Information_Product.Find_price_ElectroDepot(Name, getContext());
-            }else{
-                Price_product = Information_Product.Find_price_AssoInter(Name, getContext());
-            }
+            Price_product = Information_Product.ChooseWebsite(URL, Name, getContext());//Return the price of the corresponding website
+
             /*GET THE DATE AND TIME*/
             Locale localeFR = new Locale("FR","fr");
             Calendar calendrier = Calendar.getInstance(localeFR );
