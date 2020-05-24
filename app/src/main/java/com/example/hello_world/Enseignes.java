@@ -25,6 +25,7 @@ public class Enseignes extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView text_enseignes = findViewById(R.id.listesEnseignes);
+        Information_Product.updateCompatibleWebsite(this);//create file with all the shops inside
         text_enseignes.setText(Information_Product.getListCompatibleWebsite(this));
 
     }

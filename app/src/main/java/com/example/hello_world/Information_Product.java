@@ -86,7 +86,7 @@ public class Information_Product {
     }
 
     public static void updateCompatibleWebsite(Context context){
-            String listeEnseignes = "electrodepot\n"+"assointeresiea\n"+"darty\n"+"grosbill\n"+"ikea\n"+"footlocker\n"+"castorama\n"+"decathlon";
+            String listeEnseignes = "electrodepot\n"+"assointeresiea\n"+"grosbill\n"+"ikea\n"+"footlocker\n"+"decathlon";
 
             try {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(LISTE_ENSEIGNES, Context.MODE_PRIVATE));
@@ -257,11 +257,6 @@ public class Information_Product {
                 actual_price = Information_Product.getPricefromWebpage(Name, "<meta property=\"og:description\" content=\"Price : ", "€\" />", context);
                 break;
 
-            case "darty":
-                actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\" >\n" +
-                        "<meta itemprop=\"priceCurrency\" content=\"EUR\" >", context);
-                break;
-
             case "grosbill":
                 actual_price = Information_Product.getPricefromWebpage(Name, "var product_price_tag = '", "';", context);
                 break;
@@ -273,11 +268,6 @@ public class Information_Product {
 
             case "footlocker":
                 actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\" content=\"", "\"/><span>&euro;", context);
-                break;
-
-            case "castorama":
-                actual_price = Information_Product.getPricefromWebpage(Name, "<meta itemprop=\"price\"\n" +
-                        "            content=\"", "\" />", context);
                 break;
 
             case "decathlon":
