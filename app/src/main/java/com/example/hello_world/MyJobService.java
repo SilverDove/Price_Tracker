@@ -36,12 +36,16 @@ public class MyJobService extends JobService {
             public void run() {//define what we want to do in background
                 Information_Product infoProduct = new Information_Product();
                 /*HERE, I'M JUST CHECK IF THE PRICE CHANGE FOR THE PRODUCTS AT THE SAME TIME*/
+                if (products != null){
+                    products.clear();
+                }
                 products=db.getAllProducts();
 
                 for(Product current: products) {
                     //Checking every 15 minutes if the price changed
-                    double last_price = infoProduct.updatePrice(current, getApplicationContext());//Update product info
-                    infoProduct.SendNotification(current, notif, current.getActual_price(),last_price);//Notify if the product price drops
+                    double last_price = current.getActual_price();
+                    infoProduct.updatePrice(current, getApplicationContext());//Update product info
+                    infoProduct.SendNotification(db.getProduct(current.getName()), notif, db.getProduct(current.getName()).getActual_price(),last_price);//Notify if the product price drops
                 }
             }
         }).start();//start: Thread starts immediately

@@ -48,10 +48,11 @@
     <string name="enter_sugg">Ecrivez-nous ici !</string>
     <string name="button_sugg">Envoyer</string>
     <string name="text_FAQ"><b>Qui a créé Price Tracker ?</b>\nPrice Tracker a été créé par des étudiants de ESIEA en 2ème année internationale à l\'issue d\'une projet scientifique et technique.\n</string>
-    <string name="test">Etre notifié si le prix est inférieur à</string>
+    <string name="NotificationActivation">Notification sous </string>
     <string name="update">Prix initial</string>
     <string name="added">Dernière fois mis à jour le </string>
     <string name="price">Dernier prix enregistré</string>
     <string name="link">Lien URL</string>
-    <string name="suggestionEnseignes">BONJOUR JE RAJOUTE DU TEXT POUR VOIR SI LE SCROLL BAR FONCTIONNE CAR SINON, ON NE VERRAIT RIEN \n\n\n\nNotre essayons de rajouter le plus d\'enseignes compatibles.\nSi vous avez des requêtes pour des sites spécifiques, contactez-nous grâce à la rubrique \'Suggestions\' accessible via les réglages</string>
+    <string name="suggestionEnseignes">Notre essayons de rajouter le plus d\'enseignes compatibles.\nSi vous avez des requêtes pour des sites spécifiques, contactez-nous grâce à la rubrique \'Suggestions\' accessible via les réglages</string>
+    <string name="firstdate">Ajouté le </string>
 </resources>

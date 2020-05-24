@@ -22,21 +22,17 @@ public class PopUpClass {
     private DBHandler db;
 
     //PopupWindow display method
-
     public void showPopupWindow(final View view, Context context) {
         db = new DBHandler(context);
 
         //Create a View object yourself through inflater
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.pop_up_window, null);
-
         //Specify the length and width through constants
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
         int height = LinearLayout.LayoutParams.MATCH_PARENT;
-
         //Make Inactive Items Outside Of PopupWindow
         boolean focusable = true;
-
         //Create a window with our parameters
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -48,9 +44,10 @@ public class PopUpClass {
         Button buttonEdit = popupView.findViewById(R.id.messageButton);
         EditText editText = popupView.findViewById(R.id.frequency);
         TextView textView = popupView.findViewById(R.id.minutes);
-
         TextView currentfrequency = popupView.findViewById(R.id.CurrentNotification);
+
         List<Product> mlistProduct = db.getAllProducts();
+
         if(mlistProduct.size() == 0){
             currentfrequency.setText("Fréquence actuelle: 15 minutes");
             test2.setText("Tu ne peux pas changer la fréquence de notification tant que tu n'as pas de produit dans ta liste");
@@ -72,18 +69,16 @@ public class PopUpClass {
             public void onClick(View v) {
                 EditText editText = popupView.findViewById(R.id.frequency);
                 int frequencyNotification = Integer.parseInt(editText.getText().toString());
+
                 if(frequencyNotification<15) {//If the number if invalid
-                    Toast.makeText(view.getContext(), "Nombre invalide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Nombre invalide", Toast.LENGTH_LONG).show();
                 }else{
-                    //TODO: Change with new configuration made by Antoine for the database :)
                     //Change the parameters
                     List<Product> productList = db.getAllProducts();
                     db.getAllProducts();
                     for (int i=0; i<productList.size(); i++){
-                        productList.get(i).setTime_Update(frequencyNotification);
-                        db.addProduct(productList.get(i));
+                        db.updateNotificationFrequency(productList.get(i), frequencyNotification);
                     }
-                    db.close();
                     popupWindow.dismiss();//close the popUp window
                 }
             }

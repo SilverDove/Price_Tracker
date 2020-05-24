@@ -2,6 +2,7 @@ package com.example.hello_world;
 
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -28,6 +30,26 @@ import static android.content.Context.MODE_PRIVATE;
 public class Information_Product {
 
     private static final String LISTE_ENSEIGNES = "ListEnseignes.txt";
+
+    public static void deleteFileInterernalStorage (Context context, String fileToPath){
+            File folder = context.getFilesDir();
+            File file = new File(folder, fileToPath);
+            file.delete();
+    }
+
+    public static boolean checkUniqueFile (Context context, String fileToPath){
+        DBHandler db  = new DBHandler(context);
+        File folder = context.getFilesDir();
+        List<Product> listProduct = db.getAllProducts();
+        boolean flag = true;
+
+        for (Product product : listProduct){
+            if(fileToPath.equals(product.getName()) == true){
+                return false;
+            }
+        }
+        return flag;
+    }
 
     public static void Get_HTML(String URL_String, String Product_Name, Context context) throws Exception {
         //retrieve the web page
@@ -267,8 +289,7 @@ public class Information_Product {
 
     }
 
-    public double  updatePrice(Product produit, Context context){
-        double last_price = -1.0;
+    public void updatePrice(Product produit, Context context){
 
         if (TesterConnectionHTTP.isNetworkAvailable()==false) {
             //Display a message to say that there is no internet connection
@@ -280,8 +301,6 @@ public class Information_Product {
             try {
                 //Information about the product
                 String URL = produit.getLink();
-                last_price = produit.getActual_price();
-
                 //Retrieve price directly depending on the website
                 Get_HTML(URL, produit.getName(), context);//Get the HTML code from the webpage
                 actual_price = ChooseWebsite(URL, produit.getName(),context);//Return the price of the corresponding website
@@ -294,29 +313,30 @@ public class Information_Product {
                 System.out.println(format.format(calendrier.getTime()));
 
                 //Update product
-                System.out.println("previous price was: "+produit.getActual_price()+" and now it's "+actual_price);
-                produit.setActual_price(actual_price);
-                produit.setDate_suivie(format.format(calendrier.getTime()));
-
                 DBHandler db = new DBHandler(context);
-                db.deleteProduct(produit);
-                db.addProduct(produit);
+                System.out.println("previous price was: "+produit.getActual_price()+" and now it's "+actual_price);
+                db.updateActualPrice(produit, actual_price);
+                db.updateDateSuivie(produit, format.format(calendrier.getTime()));
+                System.out.println("Date suivie is :"+db.getProduct(produit.getName()).getDate_suivie());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        return last_price;
     }
 
     public void SendNotification(Product produit, Notification notif, double actual_price, double last_price){
         //Send a notification if the price drops
+        System.out.println("In the fonction SendNotification !! We have actual price = "+actual_price+" and last_price = "+last_price);
         if (actual_price < last_price) {
+            System.out.println("actualPrice < lastPrice");
             if(produit.getNotif_Under() == false){
+                System.out.println("No notification under a specific price");
                 notif.sendNotification(produit);//Notification
             }else{
+                System.out.println("Notification under a specific price");
                 if (actual_price < produit.getPrice_Notif() ){
+                    System.out.println("actualPrice < priceNotif");
                     notif.sendNotification(produit);//Notification
                 }
             }

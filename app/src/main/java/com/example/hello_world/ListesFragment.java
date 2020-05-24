@@ -19,7 +19,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class ListesFragment extends Fragment {
@@ -103,6 +106,11 @@ public class ListesFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(true);
                         // Update list from database
                         //startService(getView());
+
+                        if(products != null){
+                            products.clear();
+                        }
+
                         Information_Product infoProduct = new Information_Product();
                         products = (ArrayList<Product>) db.getAllProducts();
                         for (Product product : products) {
@@ -132,6 +140,7 @@ public class ListesFragment extends Fragment {
     public void delete_all(View view){
 
         for (int i=0 ;i<productItemsList.size(); i++){
+            Information_Product.deleteFileInterernalStorage(getContext(), products.get(i).getName());//Delete Internal File
             mAdapter.notifyItemRemoved(0);
         }
         productItemsList.clear();
@@ -148,7 +157,9 @@ public class ListesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        if(db.getProductsCount()==1){//MMAYBE THERE IS ANOTHER WAY
+        System.out.println("BEFORE CHECKING NUMBER OF PRODUCT");
+        if(db.getProductsCount()==1){//MAYBE THERE IS ANOTHER WAY
+            System.out.println("I SHOULD START SERVICE");
             startService(v);
         }
 
@@ -174,6 +185,7 @@ public class ListesFragment extends Fragment {
 
     public void removeProduct(int position, View v){
         productItemsList.remove(position);
+        Information_Product.deleteFileInterernalStorage(getContext(), products.get(position).getName());//Delete Internal File
         db.deleteProduct(products.get(position));
         products.remove(position);
         mAdapter.notifyItemRemoved(position);
@@ -187,7 +199,13 @@ public class ListesFragment extends Fragment {
     public void refreshRecyclerView(View v){
         int count = db.getProductsCount();
         if(count >0){
-            productItemsList.clear();
+
+            if (productItemsList != null){
+                productItemsList.clear();
+            }
+            if (products != null){
+                products.clear();
+            }
             products = (ArrayList<Product>) db.getAllProducts();
             for (Product product : products) {
                 productItemsList.add(new ProductItem(product.getName(), Double.toString(product.getActual_price())));

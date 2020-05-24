@@ -69,10 +69,12 @@ public class HomeFragment extends Fragment {
         int answer=-1;
         double Price_product=-1.0;
 
+        boolean flag = Information_Product.checkUniqueFile(getContext(), Name);
+
         answer= TesterConnectionHTTP.urlValidator(URL, getContext());//A VERIFIER (CONNECTION INTERNET)
         DBHandler db = new DBHandler(getContext());
 
-        if (answer==-1){
+        if (answer==-1 || flag == false){//If the URL is invalid or this name is already used
             Display_Error();
         }else try {
             Information_Product.Get_HTML(URL, Name, getContext());

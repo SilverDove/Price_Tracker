@@ -157,7 +157,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
     }
-    public void updateActualPrice(Product product, int NewPrice) {
+    public void updateActualPrice(Product product, double NewPrice) {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET actual_price = "+"'"+NewPrice+"' "+ "WHERE name = "+"'"+product.getName()+"'");
     }
@@ -172,8 +172,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET notif_under = "+"'"+NotifUnder+"' "+ "WHERE name = "+"'"+product.getName()+"'");
     }
 
-    public void updateNPriceUnder(Product product, double PriceUnder) {
+    public void updatePriceUnder(Product product, double PriceUnder) {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET price_Notif = "+"'"+PriceUnder+"' "+ "WHERE name = "+"'"+product.getName()+"'");
     }
+
+    public void updateDateSuivie(Product product, String dateSuivie) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE "+TABLE_PRODUCTS+" SET date_suivie = "+"'"+dateSuivie+"' "+ "WHERE name = "+"'"+product.getName()+"'");
+    }
+
 }
