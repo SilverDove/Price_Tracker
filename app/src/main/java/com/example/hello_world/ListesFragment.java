@@ -158,7 +158,7 @@ public class ListesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         System.out.println("BEFORE CHECKING NUMBER OF PRODUCT");
-        if(db.getProductsCount()==1){//MAYBE THERE IS ANOTHER WAY
+        if(db.getProductsCount()>1){//MAYBE THERE IS ANOTHER WAY
             System.out.println("I SHOULD START SERVICE");
             startService(v);
         }
