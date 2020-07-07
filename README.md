@@ -180,7 +180,7 @@ English and vice-versa. Unfortunately, this option is not activated
   * **Antoine Mairet** - *Price Tracker* - [Antoine](https://github.com/antoinemairet)
   * **Stella Thammavong** - *Price Tracker* - [StellaTham](https://github.com/StellaTham)
   * **Metagang Tabou** - *Price Tracker* - [TMetagang](https://github.com/TMetagang)
-  * **Karina Moussaoui** - *Price Tracker* 
+  * **Karina Moussaoui** - *Price Tracker* [Karinamsw](https://github.com/karinamsw)
   * **Yi-Hsuan Lee** - *Price Tracker* - [Yihsuanlee1112](https://github.com/Yihsuanlee1112)
 
  
